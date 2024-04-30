@@ -3,6 +3,12 @@ sequenceDiagram
     participant browser
     participant server
 
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server->>browser: HTTP Status Code 302 (Location: /notes)
+    deactivate server
+    Note right of browser: Server sends 302 status code and asks browser to perform GET request to /notes
+
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
     server-->>browser: HTML document
