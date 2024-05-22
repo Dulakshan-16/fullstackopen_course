@@ -6,7 +6,17 @@ const Notification = ({ message }) => {
 		return null;
 	}
 
-	return <div className={`message ${message.type}`}>{message.content}</div>;
+	const style = {
+		color: message.type === "error" ? "red" : "green",
+		background: "lightgrey",
+		fontSize: 20,
+		borderStyle: "solid",
+		borderRadius: 5,
+		padding: 10,
+		marginBottom: 10,
+	};
+
+	return <div style={style}>{message.content}</div>;
 };
 
 const Persons = ({ persons, deletePerson }) => {
@@ -108,15 +118,28 @@ const App = () => {
 			return;
 		}
 
+		let message;
+
 		personService
 			.create(newPerson)
-			.then((response) => setPersons(persons.concat(response.data)));
+			.then((response) => {
+				message = { content: `Added ${newPerson.name}`, type: "added" };
 
-		let message = { content: `Added ${newPerson.name}`, type: "added" };
-		setMessage(message);
-		setTimeout(() => setMessage(null), 5000);
-		setNewName("");
-		setNewNumber("");
+				setMessage(message);
+				setTimeout(() => setMessage(null), 5000);
+				setNewName("");
+				setNewNumber("");
+				return setPersons(persons.concat(response.data));
+			})
+			.catch((error) => {
+				message = { content: error.response.data.error, type: "error" };
+
+				setMessage(message);
+				setTimeout(() => setMessage(null), 5000);
+				setNewName("");
+				setNewNumber("");
+				return;
+			});
 	};
 
 	const deletePerson = (id) => () => {
