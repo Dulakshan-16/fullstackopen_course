@@ -39,6 +39,8 @@ const generateId = () => Math.floor(Math.random() * 1000);
 
 app.use(express.json());
 
+app.use(express.static("dist"));
+
 app.get("/api/persons", (req, res) => {
   res.json(persons);
 });
