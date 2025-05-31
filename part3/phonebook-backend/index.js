@@ -88,14 +88,14 @@ app.post("/api/persons", (req, res) => {
 
   const person = {
     ...personData,
-    id: generateId(),
+    id: generateId().toString(),
   };
 
   persons = persons.concat(person);
 
   res.json(person);
 });
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
