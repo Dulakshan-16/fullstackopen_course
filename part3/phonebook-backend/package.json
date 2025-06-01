@@ -10,12 +10,14 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rmdir ./dist && cd ../phonebook-frontend && npm run build && cp -r ./dist ../phonebook-backend",
+    "build:ui": "rmdir ./dist && cd ../phonebook-frontend && npm run build && cp -r ./dist/ ../phonebook-backend",
     "deploy:full": "npm run build:ui && git add. && git commit -m uibuild && gitpush"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "mongoose": "^8.15.1",
     "morgan": "^1.10.0"
   }
 }
