@@ -63,7 +63,7 @@ const App = () => {
     e.preventDefault();
 
     const existingPerson = persons.find(
-      (person) => person.name.toLowerCase() === newName
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
     );
 
     // Check if name already exsists in list
@@ -78,11 +78,17 @@ const App = () => {
     };
 
     // Add new person data to database
-    personService.create(newPerson).then((createdPerson) => {
-      setPersons(persons.concat(createdPerson));
-      notifyWith(`Added ${createdPerson.name}`);
-      clearForm();
-    });
+    personService
+      .create(newPerson)
+      .then((createdPerson) => {
+        setPersons(persons.concat(createdPerson));
+        notifyWith(`Added ${createdPerson.name}`);
+        clearForm();
+      })
+      .catch((error) => {
+        console.log(error);
+        notifyWith(error.response.data, true);
+      });
   };
 
   // Remove person event handler
@@ -90,8 +96,8 @@ const App = () => {
     const ok = window.confirm(`Delete ${person.name}?`);
 
     if (ok) {
-      personService.remove(person.id).then((deletedPerson) => {
-        setPersons(persons.filter((person) => person.id !== deletedPerson.id));
+      personService.remove(person.id).then(() => {
+        setPersons(persons.filter((p) => p.id !== person.id));
         notifyWith(`Deleted ${person.name}`);
       });
     }
